@@ -93,17 +93,55 @@ blogRouter.put('/', async (c) => {
     })
 })
 
-blogRouter.get('/bulk', async (c) => {
- const body = await c.req.json()
-    const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate())
-  const blogs = await prisma.blog.findMany();
+// blogRouter.get('/bulk', async (c) => {
+//  const body = await c.req.json()
+//     const prisma = new PrismaClient({
+//     datasourceUrl: c.env.DATABASE_URL,
+//   }).$extends(withAccelerate())
+//   const blogs = await prisma.blog.findMany({
+//     select: {
+//       content: true,
+//       title: true,
+//       id: true,
+//         author: {
+//           select: {
+//             name: true
+//           }
+//         }
+//       }
+//   });
 
+//     return c.json({
+//         blogs
+//     });
+// })
+
+blogRouter.get('/bulk', async (c) => {
+  try {
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const blogs = await prisma.blog.findMany({
+      select: {
+        content: true,
+        title: true,
+        id: true,
+        author: {                                                                                                                                                                          
+          select: {
+            name: true
+          }                                                                                           
+        }
+      }
+    });                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
     return c.json({
-        blogs
+      blogs
     });
-})
+  } catch (error) {
+    console.log(error);
+    return c.json({ error: "Error message." });
+  }
+});
+
 
 blogRouter.get('/:id', async (c) => {
  const id =  c.req.param("id");
@@ -128,4 +166,3 @@ blogRouter.get('/:id', async (c) => {
     });
   }
 })
-
