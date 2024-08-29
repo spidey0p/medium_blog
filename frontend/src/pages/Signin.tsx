@@ -1,9 +1,9 @@
-import { Auth } from "../components/Auth"
-import { Quote } from "../components/Quote"
+import { Auth } from "../components/Auth";
+import { Quote } from "../components/Quote";
 
 export const Signin = () => {
-    return <div>
-        <div className="grid grid-cols-1 lg:grid-col-2">
+    return (
+        <div className="grid grid-cols-1 lg:grid-cols-2">
             <div>
                 <Auth type="signin" />
             </div>
@@ -11,5 +11,5 @@ export const Signin = () => {
                 <Quote />
             </div>
         </div>
-    </div>
-}
+    );
+};
